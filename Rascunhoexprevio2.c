@@ -1,7 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-typedef char bool;
 
+#define LIXO "$"
+#define TAM_REGISTRO 76
+#define TAM_REGISTRO_FIXO 21
+#define NAO_REMOVIDO '0'
+
+typedef char bool;
 typedef struct RegistroCabecalho{
     bool status; //inidica a consistencia do arquivo de dados
     int proxRRN; //armazena o valor do proximo RRN
@@ -23,17 +28,38 @@ typedef struct RegistroDeDados{
 }RegistroDeDados;
 
 //Funcionalidade[1]SQL
-void createTable();
-void binarioNaTela();
+void createTable(){
+    FILE *arquivoinicial; //arquivo csv
+    FILE *arquivofinal; //arquivo.bin
+    arquivofinal = fopen("arquivo.bin", "wb");
+    arquivoinicial = fopen("tecnologia.csv", "rb");
+    if(arquivoinicial == NULL || arquivofinal == NULL){
+        printf("Falha no processamento do arquivo.\n"); //confere se foi aberto o arquivo
+        return;
+    }
+    long contador = 0;
+    unsigned char buffer[1]; 
+
+    while (fread(buffer, 1, 1, arquivoinicial) == 1) {
+        fwrite(buffer, 1, 1, arquivofinal); 
+        contador++;
+    }
+    fclose(arquivoinicial);
+    fclose(arquivofinal);
+    }
+    
+       
+//void binarioNaTela();
 //Funcionalidade[2]SQL
-void select();
-void from();
+//void select();
+//void from();
 //Funcionalidade[3] SQL
-void where();
+//void where();
 //Funcionalidade[4]
-void RecuperaDados(int RRN);
+//void RecuperaDados(int RRN);
 
 int main(){
-    
+    printf("Hello\n");
+    createTable();
     return 0;
 }
